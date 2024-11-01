@@ -44,6 +44,8 @@ if __name__ == "__main__":
 
     if not output_dir.is_dir():
         os.mkdir(str(output_dir))
-
+    
+    
+    diff = set(participants) - set(missing)
     with open(str(output_dir) + "/results.json", 'w') as json_file:
-        json.dump({'total': total, "missing": missing, "participants": participants}, json_file, indent=4)
+        json.dump({'total': total, "missing": missing, "participants": list(diff)}, json_file, indent=4)
