@@ -1,5 +1,6 @@
 from pathlib import Path
-from syftbox.lib import Client
+from typing import is_typeddict
+from syftbox.lib import Client, json
 import os
 
 
@@ -38,7 +39,11 @@ if __name__ == "__main__":
     participants = network_participants(client.datasite_path.parent)
 
     total, missing = aggregate(participants, client.datasite_path.parent)
-    print("\n====================\n")
-    print("Total aggregation value: ", total)
-    print("Missing value.txt peers: ", missing)
-    print("\n====================\n")
+
+    output_dir : Path = Path(client.datasite_path) / "app_pipelines" / "basic_aggregation"
+
+    if not output_dir.is_dir():
+        os.mkdir(str(output_dir))
+
+    with open(str(output_dir) + "/results.json", 'w') as json_file:
+        json.dump({'total': total, "missing": missing, "participants": participants}, json_file, indent=4)
