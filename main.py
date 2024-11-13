@@ -1,5 +1,6 @@
 from pathlib import Path
-from syftbox.lib import Client, json
+from syftbox.lib import Client
+import json
 import os
 
 
