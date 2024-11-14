@@ -5,8 +5,8 @@ import os
 
 
 def aggregate(participants: list[str], datasite_path: Path):
-    total = 0  
-    missing = []  
+    total = 0
+    missing = []
 
     for user_folder in participants:
         value_file: Path = Path(datasite_path) / user_folder / "public" / "value.txt"
@@ -40,12 +40,15 @@ if __name__ == "__main__":
 
     total, missing = aggregate(participants, client.datasite_path.parent)
 
-    output_dir : Path = Path(client.datasite_path) / "app_pipelines" / "basic_aggregation"
+    output_dir: Path = client.api_data("basic_aggregation")
 
     if not output_dir.is_dir():
-        os.mkdir(str(output_dir))
-    
-    
+        os.makedirs(str(output_dir), exist_ok=True)
+
     diff = set(participants) - set(missing)
-    with open(str(output_dir) + "/results.json", 'w') as json_file:
-        json.dump({'total': total, "missing": missing, "participants": list(diff)}, json_file, indent=4)
+    with open(str(output_dir) + "/results.json", "w") as json_file:
+        json.dump(
+            {"total": total, "missing": missing, "participants": list(diff)},
+            json_file,
+            indent=4,
+        )
