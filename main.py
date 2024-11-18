@@ -37,7 +37,7 @@ def network_participants(datasite_path: Path):
 
 def should_run() -> bool:
     INTERVAL = 20  # 20 seconds
-    timestamp_file = "./script_timestamps/{API_NAME}_last_run"
+    timestamp_file = f"./script_timestamps/{API_NAME}_last_run"
     os.makedirs(os.path.dirname(timestamp_file), exist_ok=True)
     now = datetime.now().timestamp()
     time_diff = INTERVAL  # default to running if no file exists
