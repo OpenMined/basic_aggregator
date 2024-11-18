@@ -1,8 +1,10 @@
 from pathlib import Path
+from datetime import datetime
 from syftbox.lib import Client
 import json
 import os
 
+APP_NAME = "basic_aggregation"
 
 def aggregate(participants: list[str], datasite_path: Path):
     total = 0
@@ -33,14 +35,38 @@ def network_participants(datasite_path: Path):
     return users
 
 
+def should_run() -> bool:
+    INTERVAL = 20  # 20 seconds
+    timestamp_file = "./script_timestamps/{APP_NAME}_last_run"
+    os.makedirs(os.path.dirname(timestamp_file), exist_ok=True)
+    now = datetime.now().timestamp()
+    time_diff = INTERVAL  # default to running if no file exists
+    if os.path.exists(timestamp_file):
+        try:
+            with open(timestamp_file, "r") as f:
+                last_run = int(f.read().strip())
+                time_diff = now - last_run
+        except (FileNotFoundError, ValueError):
+            print(f"Unable to read timestamp file: {timestamp_file}")
+    if time_diff >= INTERVAL:
+        with open(timestamp_file, "w") as f:
+            f.write(f"{int(now)}")
+        return True
+    return False
+   
+
 if __name__ == "__main__":
+    if not should_run():
+        print(f"Skipping {APP_NAME}, not enough time has passed.")
+        exit(0)
+    
     client = Client.load()
 
     participants = network_participants(client.datasite_path.parent)
 
     total, missing = aggregate(participants, client.datasite_path.parent)
 
-    output_dir: Path = client.api_data("basic_aggregation")
+    output_dir: Path = client.api_data(APP_NAME)
 
     if not output_dir.is_dir():
         os.makedirs(str(output_dir), exist_ok=True)
