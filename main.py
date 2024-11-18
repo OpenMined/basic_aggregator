@@ -4,7 +4,7 @@ from syftbox.lib import Client
 import json
 import os
 
-APP_NAME = "basic_aggregation"
+API_NAME = "basic_aggregation"
 
 def aggregate(participants: list[str], datasite_path: Path):
     total = 0
@@ -37,7 +37,7 @@ def network_participants(datasite_path: Path):
 
 def should_run() -> bool:
     INTERVAL = 20  # 20 seconds
-    timestamp_file = "./script_timestamps/{APP_NAME}_last_run"
+    timestamp_file = "./script_timestamps/{API_NAME}_last_run"
     os.makedirs(os.path.dirname(timestamp_file), exist_ok=True)
     now = datetime.now().timestamp()
     time_diff = INTERVAL  # default to running if no file exists
@@ -57,7 +57,7 @@ def should_run() -> bool:
 
 if __name__ == "__main__":
     if not should_run():
-        print(f"Skipping {APP_NAME}, not enough time has passed.")
+        print(f"Skipping {API_NAME}, not enough time has passed.")
         exit(0)
     
     client = Client.load()
