@@ -23,13 +23,11 @@ def aggregate(participants: list[str], datasite_path: Path):
 
 
 def network_participants(datasite_path: Path):
-    exclude_dir = ["apps", ".syft"]
-
     entries = os.listdir(datasite_path)
 
     users = []
     for entry in entries:
-        if Path(datasite_path / entry).is_dir() and entry not in exclude_dir:
+        if Path(datasite_path / entry).is_dir() and '@' in entry:
             users.append(entry)
 
     return users
@@ -62,9 +60,9 @@ if __name__ == "__main__":
     
     client = Client.load()
 
-    participants = network_participants(client.datasite_path.parent)
+    participants = network_participants(client.datasites)
 
-    total, missing = aggregate(participants, client.datasite_path.parent)
+    total, missing = aggregate(participants, client.datasites)
 
     output_dir: Path = client.api_data(API_NAME)
 
