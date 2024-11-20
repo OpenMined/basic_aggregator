@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
     total, missing = aggregate(participants, client.datasite_path.parent)
 
-    output_dir: Path = client.api_data(APP_NAME)
+    output_dir: Path = client.api_data(API_NAME)
 
     if not output_dir.is_dir():
         os.makedirs(str(output_dir), exist_ok=True)
