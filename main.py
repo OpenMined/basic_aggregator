@@ -1,6 +1,6 @@
 from pathlib import Path
 from datetime import datetime
-from syftbox.lib import Client
+from syft_core import Client
 import json
 import os
 
