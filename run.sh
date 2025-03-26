@@ -12,7 +12,7 @@ fi
 
 . .venv/bin/activate
 
-uv pip install -U syftbox --quiet
+uv pip install -U syft-core --quiet
 
 # # run app using python from venv
 echo "Running basic_aggregator with $(python3 --version) at '$(which python3)'"
