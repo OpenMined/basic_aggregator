@@ -1,6 +1,6 @@
 from pathlib import Path
 from datetime import datetime
-from syftbox.lib import Client
+from syft_core import Client
 import json
 import os
 
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     total, missing = aggregate(participants, client.datasites)
 
-    output_dir: Path = client.api_data(API_NAME)
+    output_dir: Path = client.app_data(API_NAME)
 
     if not output_dir.is_dir():
         os.makedirs(str(output_dir), exist_ok=True)
